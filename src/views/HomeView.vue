@@ -1,6 +1,7 @@
 <script setup>
 
 
+import Navbar from '@/components/Navbar.vue';
 import Button from 'primevue/button';
 
 </script>
@@ -8,6 +9,6 @@ import Button from 'primevue/button';
 <template>
   <main>
     
-<Button label="Danger" severity="danger" />
+<Navbar/>
   </main>
 </template>
