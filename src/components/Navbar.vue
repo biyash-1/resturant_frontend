@@ -31,34 +31,28 @@
         </router-link>
       </div>
       <div class="hidden md:flex items-center space-x-4 mr-6">
-        <div class="relative">
-          <router-link to="/cart" class="text-2xl relative">
-            <i class="pi pi-shopping-cart"></i>
-            <Badge
-              value="0"
-              severity="danger"
-              class="absolute -top-2 -right-3"
-            />
-          </router-link>
-        </div>
-        <Button
-          label="Logout"
-          class="p-button-text hover:bg-blue-500 hover:text-white transition duration-300"
-          @click="handleLogout"
-        />
+        
+        
       </div>
 
       <!-- Mobile Menu -->
-      <Button
-        icon="pi pi-bars"
-        class="p-button-text md:hidden"
-        @click="isSidebarVisible = true"
-      />
+       <div class="md:hidden">
+         <Button
+          icon="pi pi-bars"
+          
+           class=""
+           @click="isSidebarVisible = true"
+         />
+
+       </div>
 
       <Sidebar
         v-model:visible="isSidebarVisible"
         position="right"
-        class="w-64"
+        
+
+        
+        class="w-64 bg-gray-400"
       >
         <div class="flex flex-col space-y-6 text-lg items-center">
           <router-link
@@ -94,13 +88,9 @@
             <Button
               label="Login"
               class="p-button-text w-full"
-              @click="handleLogin"
+          
             />
-            <Button
-              label="Signup"
-              class="p-button-text w-full"
-              @click="handleSignup"
-            />
+          
           </div>
         </div>
       </Sidebar>
@@ -117,20 +107,7 @@ import Badge from 'primevue/badge';
 
 const router = useRouter();
 const isSidebarVisible = ref(false);
+import 'primeicons/primeicons.css';
 
-const handleLogin = () => {
-router.push('/login');
-isSidebarVisible.value = false;
-};
 
-const handleSignup = () => {
-router.push('/signup');
-isSidebarVisible.value = false;
-};
-
-const handleLogout = () => {
-// Add your logout logic here
-router.push('/');
-isSidebarVisible.value = false;
-};
 </script>
