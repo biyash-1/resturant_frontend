@@ -1,9 +1,11 @@
 <template>
-  <nav class="p-4 sticky top-0 shadow-sm z-50 bg-white">
+  <nav class="p-4 sticky top-0 shadow-sm z-50 bg-gray-100 ">
     <div class="container mx-auto flex justify-between items-center">
+      <!-- Left: Logo -->
       <div class="logo text-2xl font-bold">
         Burger<span class="text-yellow-500">hub</span>
       </div>
+      <!-- Center: Navigation Links -->
       <div class="hidden flex-1 md:flex justify-center space-x-6 text-sm">
         <router-link
           to="/"
@@ -12,26 +14,33 @@
           Home
         </router-link>
         <router-link
-          to="/food"
+          to="/"
           class="hover:text-blue-500 transition duration-300"
         >
           Items
         </router-link>
         <router-link
-          to="/contact"
+          to="/"
           class="hover:text-blue-500 transition duration-300"
         >
           Contact
         </router-link>
         <router-link
-          to="/orderconfirmation/orderhistory"
+          to="/"
           class="hover:text-blue-500 transition duration-300"
         >
           Orders
         </router-link>
       </div>
+      <!-- Right: Dark Mode Toggle Button -->
       <div class="hidden md:flex items-center space-x-4 mr-6">
-        <!-- Additional content can go here -->
+        <Button
+          label=""
+          icon="pi pi-moon"
+          severity="secondary"
+          raised
+          @click="toggleDarkMode()"
+        />
       </div>
       <!-- Mobile Menu Button -->
       <div class="md:hidden">
@@ -45,14 +54,14 @@
     </div>
   </nav>
 
-  <!-- Overlay -->
+  <!-- Overlay for mobile sidebar -->
   <div
     v-if="isSidebarVisible"
     @click="isSidebarVisible = false"
     class="fixed inset-0 bg-black opacity-50 z-40"
   ></div>
 
-  <!-- Sidebar -->
+  <!-- Mobile Sidebar -->
   <div
     :class="[
       'fixed top-0 right-0 h-full w-64 bg-gray-400 z-50 transform transition-transform duration-300',
@@ -66,7 +75,6 @@
     >
       <i class="pi pi-times text-2xl"></i>
     </button>
-
     <!-- Sidebar Content -->
     <div class="flex flex-col mt-12 space-y-6 text-lg items-center">
       <router-link
@@ -77,21 +85,21 @@
         Home
       </router-link>
       <router-link
-        to="/food"
+        to="/"
         class="hover:text-blue-500"
         @click="isSidebarVisible = false"
       >
         Items
       </router-link>
       <router-link
-        to="/contact"
+        to="/"
         class="hover:text-blue-500"
         @click="isSidebarVisible = false"
       >
         Contact
       </router-link>
       <router-link
-        to="/orderconfirmation/orderhistory"
+        to="/"
         class="hover:text-blue-500"
         @click="isSidebarVisible = false"
       >
@@ -108,12 +116,17 @@
 </template>
 
 <script setup>
+import Button from "primevue/button";
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import 'primeicons/primeicons.css';
+
+function toggleDarkMode() {
+  document.documentElement.classList.toggle('my-app-dark');
+}
 
 const isSidebarVisible = ref(false);
 const router = useRouter();
-import 'primeicons/primeicons.css';
 
 const handleLogin = () => {
   // Implement your login logic here
