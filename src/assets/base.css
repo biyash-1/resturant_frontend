@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+.my-app-dark nav {
+    background-color: #091725; /* Dark blue background */
+    color: #ffffff; /* Adjust text color as needed */
+  }
+
+  .my-app-dark .descriptionpara {
+    color: #9eaf9c; /* This is the hex equivalent of text-gray-400 */
+}
