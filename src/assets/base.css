@@ -8,3 +8,8 @@
   .my-app-dark .descriptionpara {
     color: #9eaf9c; /* This is the hex equivalent of text-gray-400 */
 }
+
+
+.my-app-dark .footer {
+background-color: #111827; /* This is the hex equivalent of text-gray-400 */
+}
