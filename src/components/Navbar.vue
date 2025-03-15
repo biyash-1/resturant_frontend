@@ -14,7 +14,7 @@
           Home
         </router-link>
         <router-link
-          to="/"
+          to="/food"
           class="hover:text-blue-500 transition duration-300"
         >
           Items

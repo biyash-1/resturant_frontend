@@ -14,6 +14,7 @@ onMounted(async () => {
 
 <template>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 place-items-center">
+        
         <Card v-for="foodItem in food" :key="foodItem.id"
             class="w-full border-b border-b-slate-400 max-w-[300px] h-[500px] flex flex-col justify-between shadow-lg hover:shadow-xl transition-all duration-500 transform hover:scale-105 dark:hover:bg-slate-900 hover:bg-gray-300 cursor-pointer">
             <template #header>
