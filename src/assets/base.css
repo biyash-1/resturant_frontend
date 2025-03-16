@@ -13,3 +13,11 @@
 .my-app-dark .footer {
 background-color: #111827; /* This is the hex equivalent of text-gray-400 */
 }
+
+
+.my-app-dark .card:hover {
+  background-color: #0f172a;
+   /* This is the hex equivalent of text-gray-400 */
+  }
+  
+

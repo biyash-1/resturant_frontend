@@ -2,7 +2,36 @@
 import Button from 'primevue/button'
 import { useRouter } from 'vue-router'
 import TodaySpecial from "../components/TodaySpecial.vue"
+
+
+import Accordion from 'primevue/accordion';
+import AccordionPanel from 'primevue/accordionpanel';
+import AccordionHeader from 'primevue/accordionheader';
+import AccordionContent from 'primevue/accordioncontent';
+
+
+const faqs = [
+    {
+      question: "Do you offer vegetarian options?",
+      answer: "Yes, we have a variety of vegetarian options available. You can find them in our menu under the 'Vegetarian' section.",
+    },
+    {
+      question: "How can I track my order?",
+      answer: "Once your order is confirmed, you will receive a tracking link via SMS or email. You can also track your order directly on our website.",
+    },
+    {
+      question: "What payment methods do you accept?",
+      answer: "We accept credit/debit cards, digital wallets like PayPal and Google Pay, and cash on delivery.",
+    },
+    {
+      question: "Can I cancel my order?",
+      answer: "Yes, you can cancel your order within 5 minutes of placing it. After that, the order will be processed and cannot be canceled.",
+    },
+  ];
+
 const router = useRouter()
+
+
 import Card  from 'primevue/card'
 const handleStart = () => {
   router.push('/login')
@@ -57,38 +86,115 @@ const services = [
   </section>
 
   <section class="py-16 px-4 md:px-6">
-    <h1 class="text-center text-2xl font-semibold mb-8">Our Services</h1>
-    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <div 
-        v-for="(service, index) in services"
-        :key="index"
-        v-motion
-        :initial="{ opacity: 0, x: index % 2 === 0 ? -150 : 150 }"
-        :enter="{ opacity: 1, x: 0 }"
-        :viewport="{ once: false, amount: 0.3 }"
-        :transition="{ duration: 1400, ease: 'easeInOut' }"
-        class="w-full"
+  <h1 class="text-center text-2xl font-semibold mb-8">Our <span class="text-yellow-600">Services</span></h1>
+  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div
+      v-for="(service, index) in services"
+      :key="index"
+     
+      class="w-full"
+    >
+      <Card
+        class="card h-[400px] hover:shadow-xl transition-all duration-500 transform hover:scale-105 mx-auto flex flex-col justify-between shadow-lg  dark:hover:bg-slate-900 hover:bg-gray-300 cursor-pointer"
       >
-        <Card
-          class="h-[400px] mx-auto flex flex-col justify-between shadow-lg hover:shadow-xl transition-all duration-500 transform hover:scale-105 dark:hover:bg-slate-900 hover:bg-gray-300 cursor-pointer"
-        >
-          <template #header>
-            <div class=" h-[250px] w-full">
-              <img 
-                :src="service.image" 
-                :alt="service.title"
-                class="rounded-t-lg w-full h-full object-cover"
-              />
-            </div>
-          </template>
-          <template #content>
-            <div class="p-2">
-              <h2 class="text-xl font-bold mb-2">{{ service.title }}</h2>
-              <p class=" descriptionpara">{{ service.description }}</p>
-            </div>
-          </template>
-        </Card>
+        <template #header>
+          <div class="h-[250px] w-full">
+            <img
+              :src="service.image"
+              :alt="service.title"
+              class="rounded-t-lg w-full h-full object-cover"
+            />
+          </div>
+        </template>
+        <template #content>
+          <div class="p-2">
+            <h2 class="text-xl font-bold mb-2">{{ service.title }}</h2>
+            <p class="descriptionpara">{{ service.description }}</p>
+          </div>
+        </template>
+      </Card>
+    </div>
+  </div>
+</section>
+
+<section class=" py-15 px-4 md:px-6 max-w-4xl mx-auto mb-16">
+  <h1 class="text-center font-bold text-2xl mb-3">Frequently asked questions</h1>
+  <Accordion value="0">
+  <AccordionPanel 
+    v-for="(faq, index) in faqs" 
+    :key="index" 
+    :value="index">
+    <AccordionHeader>{{ faq.question }}</AccordionHeader>
+    <AccordionContent>
+      <p class="m-0">{{ faq.answer }}</p>
+    </AccordionContent>
+  </AccordionPanel>
+</Accordion>
+
+      </section>
+
+      <section class="py-20 px-4 md:px-6 min-h-[60vh] ">
+        <div class="max-w-4xl mx-auto text-center">
+          <h2 class="text-3xl font-bold mb-4">Subscribe to Our Newsletter</h2>
+          <p class=" mb-8">
+            Get exclusive deals, updates, and delicious offers straight to your inbox!
+          </p>
+          <div class="flex flex-col md:flex-row gap-4 justify-center max-w-md mx-auto">
+            <input 
+              type="email" 
+              placeholder="Enter your email" 
+              class="px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-yellow-700 w-full md:w-auto"
+            />
+            <Button severity="warn" class=" w-full md:w-auto">
+              Subscribe
+            </Button>
+          </div>
+        </div>
+      </section>
+
+
+      <footer class=" footer py-12 px-4 md:px-6 bg-gray-100">
+  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 ">
+    <div>
+      <h3 class="text-xl font-bold mb-4">Burger Palace</h3>
+      <p class="text-sm">
+        Serving the best burgers since 2015. Quality ingredients, unforgettable taste.
+      </p>
+    </div>
+    
+    <div>
+      <h4 class="font-semibold mb-4">Quick Links</h4>
+      <ul class="space-y-2 text-sm">
+        <li><a href="#" class="transition-colors">Menu</a></li>
+        <li><a href="#" class="transition-colors">About Us</a></li>
+        <li><a href="#" class="transition-colors">Contact</a></li>
+        <li><a href="#" class="transition-colors">Careers</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 class="font-semibold mb-4">Contact Us</h4>
+      <ul class="space-y-2 text-sm">
+        <li>123 Burger Street</li>
+        <li>New York, NY 10001</li>
+        <li>Tel: (555) 123-4567</li>
+        <li>Email: info@burgerpalace.com</li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 class="font-semibold mb-4">Follow Us</h4>
+      <div class="flex space-x-4">
+        <a href="#" class="transition-colors">Facebook</a>
+        <a href="#" class="transition-colors">Instagram</a>
+        <a href="#" class="transition-colors">Twitter</a>
       </div>
     </div>
-  </section>
+  </div>
+
+  <div class="border-t border-gray-800 mt-8 pt-8 text-center text-sm">
+    <p>&copy;  Burger Palace. All rights reserved.</p>
+  </div>
+</footer>
+
 </template>
