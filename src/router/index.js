@@ -1,9 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-
 import FoodView from "../views/FoodView.vue"
 import FoodDetailView from "../views/FoodDetailView.vue"
-
+import SignupView from '@/views/SignupView.vue'
+import LoginView from '@/views/LoginView.vue'
+import CartView from "@/views/CartView.vue"
+import { useAuthStore } from '@/stores/auth'
+import CheckoutView from '@/views/CheckoutView.vue'
+import PaymentView from "@/views/PaymentView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,12 +20,15 @@ const router = createRouter({
     {
       path: '/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue'),
     },
-
+    {
+      path: "/signup",
+      name: 'signup',
+      component: SignupView
+    },
+   
+    
     {
       path: '/food',
       name: 'food',
@@ -31,8 +38,40 @@ const router = createRouter({
       path:'/food/:id',
       name: 'foodDetail',
       component: FoodDetailView
+    },
+    {
+      path: "/cart",
+      name: "cart",
+      component: CartView,
+      meta: {requiresAuth:true}
+    },
+     {
+      path: "/checkout",
+      name: "checkout",
+      component: CheckoutView,
+      meta: {requiresAuth:true}
+    },
+    {
+      path: '/checkout/payment',
+      name: "payment",
+      component: PaymentView,
+      meta: {requiresAuth:true}
     }
   ],
 })
 
-export default router
+router.beforeEach((to, from, next) => {
+  const auth = useAuthStore();
+  if (to.meta.requiresAuth && !auth.isLoggedIn) {
+    next({
+       name: 'login',
+      query: { redirectMessage: 'Please log in to access that page.' }
+     });
+  } else if ((to.name === 'login' || to.name === 'signup') && auth.isLoggedIn) {
+    next({ name: 'food' });
+  } else {
+    next();
+  }
+});
+
+export default router;
