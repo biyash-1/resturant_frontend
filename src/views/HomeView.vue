@@ -76,7 +76,7 @@ const services = [
       </section>
     </div>
   </section>
-  <section class="todays special min-h-[100vh]">
+  <section class="todays special min-h-[80vh]">
     <div class="mx-auto pt-4 mb-9">
 
       <h1 class="text-center text-2xl ">Todays <span class="text-yellow-500 font-bold">Special</span></h1>

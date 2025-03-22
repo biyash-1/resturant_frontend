@@ -24,7 +24,7 @@ const foodItems = ref([
 ]);
 
 const prices = ref([
-  { name: 'all prices', code: 0 },       // code 0 means no filtering
+  { name: 'all prices', code: 0 },     
   { name: 'under 10$', code: 10 },
   { name: 'under 20$', code: 20 },
   { name: 'under 50$', code: 50 }
@@ -54,8 +54,7 @@ const filteredFood = computed(() => {
     );
   }
 
-  // Filter by price using reviewCount as an example
-  // Only filter if a price other than 'all prices' is selected (code not equal to 0)
+ 
   if (selectedprice.value && selectedprice.value.code !== 0) {
     filtered = filtered.filter(item =>
       item.reviewCount <= selectedprice.value.code
@@ -66,7 +65,6 @@ const filteredFood = computed(() => {
 });
 
 
-// Navigation to food detail page
 const gotoFoodDetail = (id) => {
   router.push({ name: 'foodDetail', params: { id } });
 };
