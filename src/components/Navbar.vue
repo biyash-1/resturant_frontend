@@ -32,6 +32,17 @@
           Orders
         </router-link>
       </div>
+      <div class="relative mr-6">
+        <i class="pi pi-cart-plus" style="font-size: 1.5rem" @click="router.push('/cart')"></i>
+        <span v-if="auth.isLoggedIn" class="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+          {{ cart.totalItems }}
+        </span>
+      </div>
+      <div class= " hidden md:flex items-center  mr-4">
+        <Button v-if="!auth.isLoggedIn" @click="router.push('/login')" label="Login" severity="success" rounded />
+        <Button  @click="handleLogout" v-if="auth.isLoggedIn" label="logout" severity="danger" rounded />
+
+      </div>
       <!-- Right: Dark Mode Toggle Button -->
       <div class="hidden md:flex items-center space-x-4 mr-6">
         <Button
@@ -119,19 +130,33 @@
 import Button from "primevue/button";
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+const router = useRouter();
 import 'primeicons/primeicons.css';
+import {useAuthStore} from "../stores/auth.js"
+import {useCartStore} from "../stores/cart.js"
+
+const cart = useCartStore();
+
+
+const auth = useAuthStore();
 
 function toggleDarkMode() {
   document.documentElement.classList.toggle('my-app-dark');
 }
 
 const isSidebarVisible = ref(false);
-const router = useRouter();
+
 
 const handleLogin = () => {
   // Implement your login logic here
   console.log('Login button clicked');
 };
+
+const handleLogout = () =>{
+ 
+  auth.logout();
+
+}
 </script>
 
 <style scoped>
