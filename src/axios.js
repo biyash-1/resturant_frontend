@@ -27,7 +27,15 @@ axiosInstance.interceptors.response.use(
   response => response,
   async error => {
     const originalRequest = error.config;
-
+    
+    // Skip token refresh for login or refresh endpoints
+    if (
+      originalRequest.url.includes('/api/user/login') ||
+      originalRequest.url.includes('/api/user/refreshtoken')
+    ) {
+      return Promise.reject(error);
+    }
+    
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
@@ -40,10 +48,10 @@ axiosInstance.interceptors.response.use(
             return Promise.reject(err);
           });
       }
-
+      
       originalRequest._retry = true;
       isRefreshing = true;
-
+      
       try {
         // Attempt to refresh tokens
         await axiosInstance.post('/api/user/refreshtoken');
@@ -59,9 +67,8 @@ axiosInstance.interceptors.response.use(
         return Promise.reject(refreshError);
       }
     }
-
+    
     return Promise.reject(error);
   }
 );
-
-export default axiosInstance;
+export default axiosInstance; 
