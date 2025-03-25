@@ -10,6 +10,8 @@ import CheckoutView from '@/views/CheckoutView.vue'
 import PaymentView from "@/views/PaymentView.vue"
 import OrderConfirmationView from  "@/views/OrderConfirmationView.vue"
 import OrderView from "@/views/OrderView.vue"
+import AdminLayout from '@/layouts/AdminLayout.vue';
+import ContactView from '@/views/ContactView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,8 +36,13 @@ const router = createRouter({
       name: 'signup',
       component: SignupView
     },
+    {
+      path: "/contact",
+       name: "contact",
+       component: ContactView
+    }
    
-    
+    ,
     {
       path: '/food',
       name: 'food',
@@ -67,28 +74,45 @@ const router = createRouter({
     {
       path: '/orderconfirmation',
       name: "orderconfirmation",
-      component: OrderConfirmationView
+      component: OrderConfirmationView,
+      meta: {requiresAuth:true}
     },
     {
       path: '/orderconfirmation/orders',
       name: "orders",
       component: OrderView
+    },
+    {
+      path: "/admin",
+      name: "adminlayout",
+      component: AdminLayout,
+      meta: { requiresAuth: true, requiresAdmin: true }
+
     }
   ],
 })
 
 router.beforeEach((to, from, next) => {
   const auth = useAuthStore();
+  
+  // Existing checks
   if (to.meta.requiresAuth && !auth.isLoggedIn) {
     next({
-       name: 'login',
+      name: 'login',
       query: { redirectMessage: 'Please log in to access that page.' }
-     });
-  } else if ((to.name === 'login' || to.name === 'signup') && auth.isLoggedIn) {
+    });
+  }
+  // New admin check
+  else if (to.meta.requiresAdmin && !auth.isAdmin) {
+    next({ name: 'home' }); // or show access denied
+    toast.add({ severity: 'error', summary: 'Access Denied', detail: 'Admin privileges required' });
+  }
+  // Existing login/signup redirect
+  else if ((to.name === 'login' || to.name === 'signup') && auth.isLoggedIn) {
     next({ name: 'food' });
-  } else {
+  }
+  else {
     next();
   }
 });
-
 export default router;
