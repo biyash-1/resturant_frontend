@@ -8,6 +8,8 @@ import ToastService from 'primevue/toastservice';
 import persistedState from 'pinia-plugin-persistedstate';
 import App from './App.vue'
 import router from './router'
+// Add in your main.js or App.vue
+
 
 const pinia = createPinia();
 pinia.use(persistedState);
@@ -30,3 +32,4 @@ app.use(pinia);
 app.use(router);
 
 app.mount('#app');
+
