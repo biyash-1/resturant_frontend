@@ -7,7 +7,7 @@ import { useToast } from 'primevue/usetoast';
 import axiosInstance from "../axios.js";
 import { useAuthStore } from "../stores/auth.js";
 import {useRoute, useRouter } from "vue-router";
-
+import Dialog from 'primevue/dialog';
 
 import ProgressSpinner from 'primevue/progressspinner';
 
@@ -15,6 +15,8 @@ const route = useRoute();
 const toast = useToast();
 const router = useRouter();  
 const auth = useAuthStore();
+
+const showLoadingModal = ref(false);
 
 const checked1 = ref(true);
 const isLoading = ref(false);
@@ -33,6 +35,7 @@ onMounted(() => {
 
 const onFormSubmit = async () => {
     isLoading.value = true;
+    showLoadingModal.value = true;
     const formData = {
         email: email.value,
         password: password.value
@@ -72,6 +75,7 @@ const onFormSubmit = async () => {
         });
     } finally {
         isLoading.value = false;
+        showLoadingModal.value = false;
     }
 }
 
@@ -87,10 +91,12 @@ const loginAsGuest = () => {
     <div class="px-6 py-10 md:px-8 lg:px-20">
         <form @submit.prevent="onFormSubmit">
             <div class="logincard bg-surface-0 p-6 shadow rounded-border w-full lg:w-6/12 mx-auto">
-                <div v-if="isLoading"
-                    class="absolute inset-0 bg-surface-100/50 rounded-border flex items-center justify-center z-10">
-                    <ProgressSpinner class="w-16 h-16" />
-                </div>
+                <Dialog v-model:visible="showLoadingModal" modal header="Please Wait">
+          <div class="flex flex-col items-center">
+            <ProgressSpinner />
+            <p class="mt-4">The backend is initializing. This may take 1 to 2 minutes. Please wait...</p>
+          </div>
+        </Dialog>
 
                 <div class="text-center mb-8">
                     <!-- SVG and header content -->
