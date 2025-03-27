@@ -80,7 +80,8 @@ const router = createRouter({
     {
       path: '/orderconfirmation/orders',
       name: "orders",
-      component: OrderView
+      component: OrderView,
+      meta: {requiresAuth:true}
     },
     {
       path: "/admin",
