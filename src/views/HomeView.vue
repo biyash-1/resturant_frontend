@@ -3,11 +3,13 @@ import Button from 'primevue/button'
 import { useRouter } from 'vue-router'
 import TodaySpecial from "../components/TodaySpecial.vue"
 
-
 import Accordion from 'primevue/accordion';
 import AccordionPanel from 'primevue/accordionpanel';
 import AccordionHeader from 'primevue/accordionheader';
 import AccordionContent from 'primevue/accordioncontent';
+import deliveryImage from '@/assets/delivery.jpg';
+import easyPaymentImage from '@/assets/easypayment.jpg';
+import orderTrackingImage from '@/assets/ordertracking.jpg';
 
 
 const faqs = [
@@ -39,17 +41,17 @@ const handleStart = () => {
 
 const services = [
     {
-      image: "/src/assets/delivery.jpg",
+      image: deliveryImage,
       title: "Fast Delivery",
       description: "Get your food delivered to your doorstep in record time. We prioritize speed without compromising quality.",
     },
     {
-      image: "/src/assets/easypayment.jpg",
+      image: easyPaymentImage,
       title: "Easy Payment Methods",
       description: "Enjoy hassle-free payments with multiple options, including credit/debit cards, digital wallets, and cash on delivery.",
     },
     {
-      image: "/src/assets/ordertracking.jpg",
+      image: orderTrackingImage,
       title: "Real-Time Order Tracking",
       description: "Track your order in real-time from the restaurant to your location. Know exactly when your food will arrive.",
     },
