@@ -32,10 +32,9 @@ const orderItems = computed(() =>
   }))
 )
 
-// Flag to prevent duplicate submissions
 const isProcessing = ref(false)
 
-// Basic validation: check that credit card details are not empty
+
 const validateCardDetails = () => {
   return (
     cardDetails.value.number.trim() !== '' &&
@@ -59,25 +58,34 @@ const handlePayment = async () => {
       orderAmount: totalAmount.value,
       orderItems: orderItems.value,
       deliveryInfo: deliveryStore.deliveryInfo
-    }
+    };
     if (paymentMethod.value === 'creditCard') {
-      orderData.cardDetails = cardDetails.value
+      orderData.cardDetails = cardDetails.value;
     }
+
 
     await axiosInstance.post("/api/order/create", orderData);
 
+  
     toast.add({
       severity: 'success',
       summary: 'Order Placed',
       detail: 'Your order was processed successfully',
       life: 3000
-    })
+    });
+
 
     cartStore.clearCart();
 
-    // Await the router.push to handle any navigation errors
-    await router.push({ name: 'orderconfirmation' });
+  
+    try {
+      await router.push({ name: 'orderconfirmation' });
+    } catch (navigationError) {
+      console.error('Navigation error:', navigationError);
+    }
+
   } catch (error) {
+
     console.error('Payment processing error:', error);
     toast.add({
       severity: 'error',
@@ -85,8 +93,6 @@ const handlePayment = async () => {
       detail: 'Could not process your payment',
       life: 3000
     });
-
-
   } finally {
     isProcessing.value = false;
   }
@@ -103,13 +109,19 @@ const handlePayment = async () => {
       <div class="flex flex-col gap-4">
         <!-- Payment Method Selector -->
         <div class="flex gap-3 mb-4">
-          <Button @click="paymentMethod = 'creditCard'"
-            :severity="paymentMethod === 'creditCard' ? 'warn' : 'secondary'" class="flex-1">
+          <Button
+            @click="paymentMethod = 'creditCard'"
+            :severity="paymentMethod === 'creditCard' ? 'warn' : 'secondary'"
+            class="flex-1"
+          >
             <i class="pi pi-credit-card mr-2"></i>
             Credit Card
           </Button>
-          <Button @click="paymentMethod = 'cashOnDelivery'"
-            :severity="paymentMethod === 'cashOnDelivery' ? 'warn' : 'secondary'" class="flex-1">
+          <Button
+            @click="paymentMethod = 'cashOnDelivery'"
+            :severity="paymentMethod === 'cashOnDelivery' ? 'warn' : 'secondary'"
+            class="flex-1"
+          >
             <i class="pi pi-money-bill mr-2"></i>
             Cash on Delivery
           </Button>
@@ -118,27 +130,50 @@ const handlePayment = async () => {
         <div v-if="paymentMethod === 'creditCard'" class="space-y-4">
           <div class="field">
             <label class="block font-medium mb-2">Card Number</label>
-            <InputText v-model="cardDetails.number" placeholder="1234 5678 9012 3456" class="w-full" />
+            <InputText
+              v-model="cardDetails.number"
+              placeholder="1234 5678 9012 3456"
+              class="w-full"
+            />
           </div>
           <div class="flex gap-3">
             <div class="field flex-1">
               <label class="block font-medium mb-2">Expiry Date</label>
-              <InputText v-model="cardDetails.expiry" placeholder="MM/YY" class="w-full" />
+              <InputText
+                v-model="cardDetails.expiry"
+                placeholder="MM/YY"
+                class="w-full"
+              />
             </div>
             <div class="field flex-1">
               <label class="block font-medium mb-2">CVC</label>
-              <InputText v-model="cardDetails.cvc" placeholder="123" class="w-full" />
+              <InputText
+                v-model="cardDetails.cvc"
+                placeholder="123"
+                class="w-full"
+              />
             </div>
           </div>
-          <Button label="Pay Now" icon="pi pi-lock" class="w-full" @click="handlePayment" :disabled="isProcessing" />
+          <Button
+            label="Pay Now"
+            icon="pi pi-lock"
+            class="w-full"
+            @click="handlePayment"
+            :disabled="isProcessing"
+          />
         </div>
         <!-- Cash on Delivery -->
         <div v-if="paymentMethod === 'cashOnDelivery'" class="text-center">
           <p class="text-gray-600 mb-4">
             You will pay <strong>${{ totalAmount.toFixed(2) }}</strong> when your order arrives
           </p>
-          <Button label="Confirm Order" icon="pi pi-check" class="w-full" @click="handlePayment"
-            :disabled="isProcessing" />
+          <Button
+            label="Confirm Order"
+            icon="pi pi-check"
+            class="w-full"
+            @click="handlePayment"
+            :disabled="isProcessing"
+          />
         </div>
       </div>
     </div>
