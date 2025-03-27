@@ -161,6 +161,8 @@ const handleLogout = async () => {
       detail: 'Logout Successful',
       life: 3000
     });
+
+    router.push("/")
  
   } else {
     toast.add({
