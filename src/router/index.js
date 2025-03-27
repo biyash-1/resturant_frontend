@@ -73,7 +73,7 @@ const router = createRouter({
     },
     {
       path: '/orderconfirmation',
-      name: "orderconfirmation",
+      name: "orderconfirm",
       component: OrderConfirm,
       meta: {requiresAuth:true}
     },
