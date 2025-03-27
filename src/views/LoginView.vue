@@ -13,7 +13,7 @@ import ProgressSpinner from 'primevue/progressspinner';
 
 const route = useRoute();
 const toast = useToast();
-const router = useRouter();
+const router = useRouter();  
 const auth = useAuthStore();
 
 const checked1 = ref(true);
@@ -45,9 +45,15 @@ const onFormSubmit = async () => {
         auth.setUser({
             username: data.username,
             email: data.email,
-            password: data.password
+            password: data.password,
+            role:data.role
         });
-        router.push('/food');
+        if (auth.isAdmin) {
+      router.push('/admin');
+    } else {
+      router.push('/food');
+    }
+
         console.log(auth);
 
         toast.add({
@@ -68,6 +74,13 @@ const onFormSubmit = async () => {
         isLoading.value = false;
     }
 }
+
+
+const loginAsGuest = () => {
+  email.value = 'guest0@gmail.com';
+  password.value = '00000';
+  onFormSubmit();
+};
 </script>
 
 <template>
@@ -90,7 +103,7 @@ const onFormSubmit = async () => {
                         Welcome <span class="text-yellow-500">Back</span>
                     </div>
                     <span class="text-surface-600 font-medium leading-normal">Don't have an account?</span>
-                    <a class="font-medium no-underline ml-2 text-primary cursor-pointer text-blue-700">
+                    <a @click="router.push({name: 'signup'})" class="font-medium no-underline ml-2 text-primary cursor-pointer text-blue-700">
                         Create today!
                     </a>
                 </div>
@@ -114,7 +127,16 @@ const onFormSubmit = async () => {
                         </a>
                     </div>
 
-                    <Button type="submit" label="Sign In" icon="pi pi-user text-xl leading-none" class="w-full" />
+                    <div class="flex flex-col gap-2">
+            <Button type="submit" label="Sign In" icon="pi pi-user text-xl leading-none" class="w-full" />
+            <Button 
+              label="Login as Guest" 
+              severity="info" 
+              @click="loginAsGuest"
+              class="w-full"
+              icon="pi pi-users"
+            />
+          </div>
 
                 </div>
             </div>

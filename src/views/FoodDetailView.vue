@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useFoodStore } from '@/stores/foodStore';
+import { useFoodStore } from '@/stores/foodstore';
 import Button from 'primevue/button';
 import TodaySpecial from "../components/TodaySpecial.vue"
 

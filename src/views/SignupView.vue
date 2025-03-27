@@ -67,7 +67,7 @@ const onFormSubmit = async () => {
                     <span class="text-surface-600 font-medium leading-normal">
                         Already have an account?
                     </span>
-                    <a class="font-medium no-underline ml-2 text-primary cursor-pointer text-blue-700">
+                    <a @click="router.push('/login')" class="font-medium no-underline ml-2 text-primary cursor-pointer text-blue-700">
                         Sign In
                     </a>
                 </div>

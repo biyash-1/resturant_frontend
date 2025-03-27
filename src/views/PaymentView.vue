@@ -22,7 +22,6 @@ const cardDetails = ref({
 
 const DELIVERY_CHARGE = 5
 const totalAmount = computed(() => cartStore.totalPrice + DELIVERY_CHARGE)
-
 const orderItems = computed(() =>
   cartStore.items.map(item => ({
     productId: item.id,
@@ -32,31 +31,41 @@ const orderItems = computed(() =>
     image: item.image
   }))
 )
-console.log("order data",orderItems);
 
+// Flag to prevent duplicate submissions
+const isProcessing = ref(false)
+
+// Basic validation: check that credit card details are not empty
+const validateCardDetails = () => {
+  return (
+    cardDetails.value.number.trim() !== '' &&
+    cardDetails.value.expiry.trim() !== '' &&
+    cardDetails.value.cvc.trim() !== ''
+  )
+}
 
 const handlePayment = async () => {
+  if (isProcessing.value) return;
+
+  if (paymentMethod.value === 'creditCard' && !validateCardDetails()) {
+    toast.add({ severity: 'warn', summary: 'Validation Error', detail: 'Please fill in all credit card details.', life: 3000 });
+    return;
+  }
+
+  isProcessing.value = true;
   try {
-    // Base order data
     const orderData = {
       paymentMethod: paymentMethod.value,
       orderAmount: totalAmount.value,
       orderItems: orderItems.value,
-      deliveryInfo: deliveryStore.info
+      deliveryInfo: deliveryStore.deliveryInfo
     }
-
-    // If payment is by credit card, include card details
     if (paymentMethod.value === 'creditCard') {
       orderData.cardDetails = cardDetails.value
     }
 
-    const response = await axiosInstance.post("/api/order/create", orderData)
-    
-    // Check if the response status indicates success
-    if (response.status !== 200) {
-      throw new Error("Payment failed")
-    }
-    
+    await axiosInstance.post("/api/order/create", orderData);
+
     toast.add({
       severity: 'success',
       summary: 'Order Placed',
@@ -64,8 +73,10 @@ const handlePayment = async () => {
       life: 3000
     })
     
-    cartStore.clearCart()
-    router.push({ name: 'orderconfirmation' })
+    cartStore.clearCart();
+    
+    // Await the router.push to handle any navigation errors
+    await router.push({ name: 'orderconfirmation' });
   } catch (error) {
     toast.add({
       severity: 'error',
@@ -74,8 +85,11 @@ const handlePayment = async () => {
       life: 3000
     })
     console.error('Payment error:', error)
+   
+  } finally {
+    isProcessing.value = false;
   }
-}
+};
 </script>
 
 <template>
@@ -85,11 +99,10 @@ const handlePayment = async () => {
       <div class="text-center text-2xl font-bold mb-4">
         Payment Information
       </div>
-
       <div class="flex flex-col gap-4">
         <!-- Payment Method Selector -->
         <div class="flex gap-3 mb-4">
-          <Button 
+          <Button
             @click="paymentMethod = 'creditCard'"
             :severity="paymentMethod === 'creditCard' ? 'warn' : 'secondary'"
             class="flex-1"
@@ -97,7 +110,6 @@ const handlePayment = async () => {
             <i class="pi pi-credit-card mr-2"></i>
             Credit Card
           </Button>
-          
           <Button
             @click="paymentMethod = 'cashOnDelivery'"
             :severity="paymentMethod === 'cashOnDelivery' ? 'warn' : 'secondary'"
@@ -107,46 +119,42 @@ const handlePayment = async () => {
             Cash on Delivery
           </Button>
         </div>
-
         <!-- Credit Card Form -->
         <div v-if="paymentMethod === 'creditCard'" class="space-y-4">
           <div class="field">
             <label class="block font-medium mb-2">Card Number</label>
-            <InputText 
+            <InputText
               v-model="cardDetails.number"
               placeholder="1234 5678 9012 3456"
               class="w-full"
             />
           </div>
-
           <div class="flex gap-3">
             <div class="field flex-1">
               <label class="block font-medium mb-2">Expiry Date</label>
-              <InputText 
+              <InputText
                 v-model="cardDetails.expiry"
                 placeholder="MM/YY"
                 class="w-full"
               />
             </div>
-            
             <div class="field flex-1">
               <label class="block font-medium mb-2">CVC</label>
-              <InputText 
+              <InputText
                 v-model="cardDetails.cvc"
                 placeholder="123"
                 class="w-full"
               />
             </div>
           </div>
-
-          <Button 
-            label="Pay Now" 
-            icon="pi pi-lock" 
-            class="w-full" 
+          <Button
+            label="Pay Now"
+            icon="pi pi-lock"
+            class="w-full"
             @click="handlePayment"
+            :disabled="isProcessing"
           />
         </div>
-
         <!-- Cash on Delivery -->
         <div v-if="paymentMethod === 'cashOnDelivery'" class="text-center">
           <p class="text-gray-600 mb-4">
@@ -157,6 +165,7 @@ const handlePayment = async () => {
             icon="pi pi-check"
             class="w-full"
             @click="handlePayment"
+            :disabled="isProcessing"
           />
         </div>
       </div>

@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router';
 import Navbar from './components/Navbar.vue';
 import Toast from 'primevue/toast';
 
+
 const route = useRoute();
 
 const isAdminRoute = computed(() => {
@@ -12,7 +13,6 @@ const isAdminRoute = computed(() => {
   return result;
 });
 
-// Optional: watch route changes to verify the behavior.
 watch(() => route.path, (newPath) => {
   console.log('Route changed to:', newPath);
 });
@@ -20,6 +20,9 @@ watch(() => route.path, (newPath) => {
 
 <template>
   <div>
+    <!-- Place cursor effect component here -->
+    <vue-cursor-fx />
+
     <!-- Navbar shows only when not on an admin route -->
     <Navbar v-if="!isAdminRoute" />
     <Toast />

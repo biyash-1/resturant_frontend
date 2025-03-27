@@ -20,13 +20,13 @@
           Items
         </router-link>
         <router-link
-          to="/"
+          to="/contact"
           class="hover:text-blue-500 transition duration-300"
         >
           Contact
         </router-link>
         <router-link
-          to="/"
+          to="/orderconfirmation/orders"
           class="hover:text-blue-500 transition duration-300"
         >
           Orders
@@ -34,7 +34,7 @@
       </div>
       <div class="relative mr-6">
         <i class="pi pi-cart-plus" style="font-size: 1.5rem" @click="router.push('/cart')"></i>
-        <span v-if="auth.isLoggedIn" class="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+        <span class="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
           {{ cart.totalItems }}
         </span>
       </div>
@@ -134,8 +134,9 @@ const router = useRouter();
 import 'primeicons/primeicons.css';
 import {useAuthStore} from "../stores/auth.js"
 import {useCartStore} from "../stores/cart.js"
-
+import { useToast } from "primevue/usetoast";
 const cart = useCartStore();
+const toast = useToast();
 
 
 const auth = useAuthStore();
@@ -148,15 +149,28 @@ const isSidebarVisible = ref(false);
 
 
 const handleLogin = () => {
-  // Implement your login logic here
   console.log('Login button clicked');
 };
 
-const handleLogout = () =>{
+const handleLogout = async () => {
+  const success = await auth.logout();
+  if (success) {
+    toast.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Logout Successful',
+      life: 3000
+    });
  
-  auth.logout();
-
-}
+  } else {
+    toast.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Logout Failed',
+      life: 3000
+    });
+  }
+};
 </script>
 
 <style scoped>

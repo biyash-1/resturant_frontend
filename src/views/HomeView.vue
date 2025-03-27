@@ -53,8 +53,7 @@ const services = [
       title: "Real-Time Order Tracking",
       description: "Track your order in real-time from the restaurant to your location. Know exactly when your food will arrive.",
     },
-  ];
-</script>
+  ];</script>
 
 <template>
   <section class=" herosection min-h-screen flex items-center justify-center p-8">
@@ -68,7 +67,7 @@ const services = [
             Craving something delicious? Our burgers are made with the finest ingredients, crafted to perfection just
             for you. Come take a bite of the best flavors in town!
           </p>
-          <Button className="bg-yellow-500">Explore now</Button>
+          <Button @click = "router.push('/food')" severity="warn" class=" px-2 rounded-3xl">Explore now</Button>
         </div>
         <div className="w-full md:w-auto flex justify-center mt-2 md:mt-0">
           <img src="/src/assets/burger.png" alt="Burger Image" className="max-w-full h-auto" />

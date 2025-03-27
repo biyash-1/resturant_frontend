@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, computed, ref } from 'vue';
-import { useFoodStore } from '@/stores/foodStore';
+import { useFoodStore } from '@/stores/foodstore';
 import { useRouter } from 'vue-router';
 import Card from 'primevue/card';
 import Button from 'primevue/button';
@@ -89,7 +89,7 @@ const gotoFoodDetail = (id) => {
       <Card
         v-for="foodItem in filteredFood"
         :key="foodItem.id"
-        class="card w-full max-w-[300px] h-[470px] flex flex-col shadow-lg hover:shadow-xl transition-all duration-500 transform hover:scale-105 dark:hover:bg-slate-900 hover:bg-gray-300 cursor-pointer"
+        class="card w-full max-w-[300px] h-[470px] flex flex-col shadow-lg hover:shadow-xl transition-all duration-500 transform hover:scale-105  hover:bg-gray-600 cursor-pointer"
       >
         <template #header>
           <img :src="foodItem.image" :alt="foodItem.name" width="300" height="50" class="rounded-t-lg" style="object-fit: cover;" />

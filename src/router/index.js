@@ -8,7 +8,7 @@ import CartView from "@/views/CartView.vue"
 import { useAuthStore } from '@/stores/auth'
 import CheckoutView from '@/views/CheckoutView.vue'
 import PaymentView from "@/views/PaymentView.vue"
-import OrderConfirmationView from  "@/views/OrderConfirmationView.vue"
+import OrderConfirm from  "@/views/OrderConfirm.vue"
 import OrderView from "@/views/OrderView.vue"
 import AdminLayout from '@/layouts/AdminLayout.vue';
 import ContactView from '@/views/ContactView.vue'
@@ -57,7 +57,7 @@ const router = createRouter({
       path: "/cart",
       name: "cart",
       component: CartView,
-      meta: {requiresAuth:true}
+     
     },
      {
       path: "/checkout",
@@ -74,7 +74,7 @@ const router = createRouter({
     {
       path: '/orderconfirmation',
       name: "orderconfirmation",
-      component: OrderConfirmationView,
+      component: OrderConfirm,
       meta: {requiresAuth:true}
     },
     {
