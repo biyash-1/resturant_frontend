@@ -1,16 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import FoodView from "../views/FoodView.vue"
-import FoodDetailView from "../views/FoodDetailView.vue"
+import FoodView from '../views/FoodView.vue'
+import FoodDetailView from '../views/FoodDetailView.vue'
 import SignupView from '@/views/SignupView.vue'
 import LoginView from '@/views/LoginView.vue'
-import CartView from "@/views/CartView.vue"
+import CartView from '@/views/CartView.vue'
 import { useAuthStore } from '@/stores/auth'
 import CheckoutView from '@/views/CheckoutView.vue'
-import PaymentView from "@/views/PaymentView.vue"
-import OrderConfirm from  "@/views/OrderConfirm.vue"
-import OrderView from "@/views/OrderView.vue"
-import AdminLayout from '@/layouts/AdminLayout.vue';
+import PaymentView from '@/views/PaymentView.vue'
+import OrderConfirm from '@/views/OrderConfirm.vue'
+import OrderView from '@/views/OrderView.vue'
+import AdminLayout from '@/layouts/AdminLayout.vue'
 import ContactView from '@/views/ContactView.vue'
 
 const router = createRouter({
@@ -28,92 +28,87 @@ const router = createRouter({
     },
     {
       path: '/login',
-      name: "login",
-      component: LoginView
+      name: 'login',
+      component: LoginView,
     },
     {
-      path: "/signup",
+      path: '/signup',
       name: 'signup',
-      component: SignupView
+      component: SignupView,
     },
     {
-      path: "/contact",
-       name: "contact",
-       component: ContactView
-    }
-   
-    ,
+      path: '/contact',
+      name: 'contact',
+      component: ContactView,
+    },
     {
       path: '/food',
       name: 'food',
-      component: FoodView
+      component: FoodView,
     },
     {
-      path:'/food/:id',
+      path: '/food/:id',
       name: 'foodDetail',
-      component: FoodDetailView
+      component: FoodDetailView,
     },
     {
-      path: "/cart",
-      name: "cart",
+      path: '/cart',
+      name: 'cart',
       component: CartView,
-     
     },
-     {
-      path: "/checkout",
-      name: "checkout",
+    {
+      path: '/checkout',
+      name: 'checkout',
       component: CheckoutView,
-      meta: {requiresAuth:true}
+      meta: { requiresAuth: true },
     },
     {
       path: '/checkout/payment',
-      name: "payment",
+      name: 'payment',
       component: PaymentView,
-      meta: {requiresAuth:true}
+      meta: { requiresAuth: true },
     },
     {
       path: '/orderconfirmation',
-      name: "orderconfirm",
+      name: 'orderconfirmation',
       component: OrderConfirm,
-      meta: {requiresAuth:true}
+      meta: { requiresAuth: true },
     },
     {
       path: '/orderconfirmation/orders',
-      name: "orders",
+      name: 'orders',
       component: OrderView,
-      meta: {requiresAuth:true}
+      meta: { requiresAuth: true },
     },
     {
-      path: "/admin",
-      name: "adminlayout",
+      path: '/admin',
+      name: 'adminlayout',
       component: AdminLayout,
-      meta: { requiresAuth: true, requiresAdmin: true }
-
-    }
+      meta: { requiresAuth: true, requiresAdmin: true },
+    },
   ],
 })
 
 router.beforeEach((to, from, next) => {
-  const auth = useAuthStore();
-  
+  const auth = useAuthStore()
+
   // Existing checks
   if (to.meta.requiresAuth && !auth.isLoggedIn) {
     next({
       name: 'login',
-      query: { redirectMessage: 'Please log in to access that page.' }
-    });
+      query: { redirectMessage: 'Please log in to access that page.' },
+    })
   }
   // New admin check
   else if (to.meta.requiresAdmin && !auth.isAdmin) {
-    next({ name: 'home' }); // or show access denied
-    toast.add({ severity: 'error', summary: 'Access Denied', detail: 'Admin privileges required' });
+    next({ name: 'home' }) // or show access denied
+    toast.add({ severity: 'error', summary: 'Access Denied', detail: 'Admin privileges required' })
   }
   // Existing login/signup redirect
   else if ((to.name === 'login' || to.name === 'signup') && auth.isLoggedIn) {
-    next({ name: 'food' });
+    next({ name: 'food' })
+  } else {
+    next()
   }
-  else {
-    next();
-  }
-});
-export default router;
+})
+export default router
