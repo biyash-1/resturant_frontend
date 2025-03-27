@@ -78,7 +78,7 @@ const handlePayment = async () => {
     // Await the router.push to handle any navigation errors
     await router.push({ name: 'orderconfirmation' });
   } catch (error) {
-    if (!(error.response && error.response.status === 404)) {
+    if (error) {
     toast.add({
       severity: 'error',
       summary: 'Payment Failed',
