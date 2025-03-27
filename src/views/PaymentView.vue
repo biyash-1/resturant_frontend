@@ -78,13 +78,14 @@ const handlePayment = async () => {
     // Await the router.push to handle any navigation errors
     await router.push({ name: 'orderconfirmation' });
   } catch (error) {
+    if (!(error.response && error.response.status === 404)) {
     toast.add({
       severity: 'error',
       summary: 'Payment Failed',
       detail: 'Could not process your payment',
       life: 3000
-    })
-    console.error('Payment error:', error)
+    });
+  }
    
   } finally {
     isProcessing.value = false;
